@@ -147,13 +147,25 @@
   </dependencies>
   <build>
     <plugins>
-      <plugin>
-        <artifactId>maven-compiler-plugin</artifactId>
-        <configuration>
-          <source>1.7</source>
-          <target>1.7</target>
-        </configuration>
-      </plugin>
+	    <plugin>
+	      <artifactId>maven-compiler-plugin</artifactId>
+	      <configuration>
+	        <source>1.7</source>
+	        <target>1.7</target>
+	      </configuration>
+	    </plugin>
+		<plugin>
+			<groupId>org.springframework.boot</groupId>
+			<artifactId>spring-boot-maven-plugin</artifactId>
+			<version>1.4.1.RELEASE</version>
+			<executions>
+			    <execution>
+			        <goals>
+			            <goal>default</goal>
+			        </goals>
+			    </execution>
+			</executions>
+		</plugin>
     </plugins>
   </build>
 </project>
