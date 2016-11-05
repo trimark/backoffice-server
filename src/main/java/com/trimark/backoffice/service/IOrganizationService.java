@@ -12,4 +12,8 @@ public interface IOrganizationService {
 	List<Organization> findAll();
 	
 	List<Organization> findAllChildOrganization(int id);
+	
+	void create(Organization organization);
+	
+	void update(Organization organization);
 }

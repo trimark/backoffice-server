@@ -35,5 +35,15 @@ public class OrganizationService implements IOrganizationService {
 	@Override
 	public List<Organization> findAllChildOrganization(int id) {
 		return organizationRepository.findAllChildOrganization(id);
-	}	
+	}
+
+	@Override
+	public void create(Organization organization) {
+		organizationRepository.create(organization);
+	}
+	
+	@Override
+	public void update(Organization organization) {
+		organizationRepository.update(organization);
+	}
 }

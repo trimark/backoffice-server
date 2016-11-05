@@ -2,6 +2,8 @@ package com.trimark.backoffice.persistence.model;
 
 import javax.persistence.Column;
 import javax.persistence.Entity;
+import javax.persistence.EnumType;
+import javax.persistence.Enumerated;
 import javax.persistence.FetchType;
 import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
@@ -9,9 +11,11 @@ import javax.persistence.Table;
 
 import org.springframework.data.jpa.domain.AbstractPersistable;
 
+import com.trimark.backoffice.persistence.enumeration.RoleType;
+
 @Entity
 @Table(name = "roles")
-public class Role extends AbstractPersistable<Long> {
+public class Role extends AbstractPersistable<Integer> {
 
 	/**
 	 * 
@@ -24,6 +28,10 @@ public class Role extends AbstractPersistable<Long> {
 	
 	@Column(unique = true)
 	private String name;
+	
+	@Enumerated(EnumType.ORDINAL)
+	@Column(name = "role_type")
+	private RoleType roleType;
 	
 	@Column
 	private String description;
@@ -42,6 +50,14 @@ public class Role extends AbstractPersistable<Long> {
 
 	public void setName(String name) {
 		this.name = name;
+	}
+	
+	public RoleType getRoleType() {
+		return roleType;
+	}
+
+	public void setRoleType(RoleType roleType) {
+		this.roleType = roleType;
 	}
 
 	public String getDescription() {

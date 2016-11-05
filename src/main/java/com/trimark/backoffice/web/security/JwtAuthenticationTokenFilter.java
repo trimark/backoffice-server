@@ -28,7 +28,7 @@ public class JwtAuthenticationTokenFilter extends AbstractAuthenticationProcessi
 		if (jwtToken != null)
 		{
 			UsernamePasswordAuthenticationToken authRequest = new UsernamePasswordAuthenticationToken(
-					"trimark/superuser", "password2");
+					"trimark/superuser", "password");
 			try {
 				return getAuthenticationManager().authenticate(authRequest);
 			}

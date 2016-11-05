@@ -1,6 +1,7 @@
 package com.trimark.backoffice.web.response.model;
 
 import java.io.Serializable;
+import java.util.List;
 
 public class OrganizationModel implements Serializable {
 
@@ -9,32 +10,36 @@ public class OrganizationModel implements Serializable {
 	 */
 	private static final long serialVersionUID = 1L;
 	
-	private long id;
+	private int id;
 	
 	private String name;
 	
-	private RoleModel roleModel;
+	private OrganizationModel parent;
+	
+	private RoleModel role;
+	
+	private List<OrganizationModel> children;
 	
 	public OrganizationModel() {
 	}
 	
-	public OrganizationModel(long id, String name)
+	public OrganizationModel(int id, String name)
 	{
 		this.id = id;
 		this.name = name;
 	}
 	
-	public OrganizationModel(long id, String name, RoleModel roleModel)
+	public OrganizationModel(int id, String name, RoleModel role)
 	{
 		this(id, name);
-		this.roleModel = roleModel;
+		this.role = role;
 	}
 
-	public long getId() {
+	public int getId() {
 		return id;
 	}
 
-	public void setId(long id) {
+	public void setId(int id) {
 		this.id = id;
 	}
 
@@ -45,12 +50,28 @@ public class OrganizationModel implements Serializable {
 	public void setName(String name) {
 		this.name = name;
 	}
-
-	public RoleModel getRoleModel() {
-		return roleModel;
+	
+	public OrganizationModel getParent() {
+		return parent;
 	}
 
-	public void setRoleModel(RoleModel roleModel) {
-		this.roleModel = roleModel;
+	public void setParent(OrganizationModel parent) {
+		this.parent = parent;
+	}
+
+	public RoleModel getRole() {
+		return role;
+	}
+
+	public void setRol(RoleModel role) {
+		this.role = role;
+	}
+
+	public List<OrganizationModel> getChildren() {
+		return children;
+	}
+
+	public void setChildren(List<OrganizationModel> children) {
+		this.children = children;
 	}	
 }

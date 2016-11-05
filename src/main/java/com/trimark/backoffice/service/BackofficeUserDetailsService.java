@@ -40,8 +40,9 @@ public class BackofficeUserDetailsService implements UserDetailsService {
 	
 	private List<GrantedAuthority> getGrantedAuthorities() {
 		List<GrantedAuthority> grantedAuthorities = new ArrayList<GrantedAuthority>();
-		grantedAuthorities.add(new SimpleGrantedAuthority("ROLE_ORGANIZATION_CREATE"));
-		grantedAuthorities.add(new SimpleGrantedAuthority("ROLE_ORGANIZATION_READ"));
+		grantedAuthorities.add(new SimpleGrantedAuthority("ROLE_ORGANIZATIONS_CREATE"));
+		grantedAuthorities.add(new SimpleGrantedAuthority("ROLE_ORGANIZATIONS_READ"));
+		grantedAuthorities.add(new SimpleGrantedAuthority("ROLE_ROLES_CREATE"));
 		return grantedAuthorities;
 	}
 

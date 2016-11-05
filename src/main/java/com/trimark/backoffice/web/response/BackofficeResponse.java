@@ -12,5 +12,5 @@ public abstract class BackofficeResponse<T> {
 		this.code = code;
 	}
 	
-	abstract T getResponse();
+	abstract T getData();
 }

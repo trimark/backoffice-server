@@ -4,15 +4,15 @@ import com.trimark.backoffice.web.response.model.LoginSuccessModel;
 
 public class LoginSuccessResponse extends BackofficeResponse<LoginSuccessModel> {
 	
-	private LoginSuccessModel output;
+	private LoginSuccessModel model;
 	
-	public LoginSuccessResponse(LoginSuccessModel output) {
+	public LoginSuccessResponse(LoginSuccessModel model) {
 		setCode(0);
-		this.output = output;
+		this.model = model;
 	}
 
 	@Override
-	public LoginSuccessModel getResponse() {
-		return output;
+	public LoginSuccessModel getData() {
+		return model;
 	}
 }

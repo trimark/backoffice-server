@@ -44,6 +44,16 @@ public class OrganizationRepository extends BaseRepository<Integer, Organization
 		return organization.getChildren();
 	}
 	
+	@Override
+	public void create(Organization organization) {
+		persist(organization);
+	}
+	
+	@Override
+	public void update(Organization organization) {
+		super.update(organization);
+	}
+	
 	private void load(Organization organization) {
 		Hibernate.initialize(organization.getParent());
 		Hibernate.initialize(organization.getRole());

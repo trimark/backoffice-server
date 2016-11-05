@@ -41,7 +41,6 @@ public class MainController {
 	public String root() {
 		try {
 			Organization organization = organizationService.findById(2);
-			System.out.println("Test natin *** >>> " + roleService.getRoleModulePermissions(organization.getRole()).get(0).getModule());
 		}
 		catch (Exception e) {
 			e.printStackTrace();
