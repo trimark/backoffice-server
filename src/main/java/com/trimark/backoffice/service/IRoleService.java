@@ -11,9 +11,17 @@ public interface IRoleService {
 	
 	Role findById(int id);
 	
+	List<Role> findRolesByOwner(Organization owner);
+	
 	List<Role> findRolesByOwnerAndType(Organization owner, RoleType roleType);
 	
-	void saveRole(Role role);
+	void create(Role role);
+	
+	void update(Role role);
 	
 	List<RoleModulePermission> findRoleModulePermissions(Role role);
+	
+	void saveRoleModulePermissions(List<RoleModulePermission> roleModulePermissions);
+	
+	void deleteRoleModulePermissions(List<RoleModulePermission> roleModulePermissions);
 }

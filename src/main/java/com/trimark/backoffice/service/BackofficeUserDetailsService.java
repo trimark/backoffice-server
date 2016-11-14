@@ -13,8 +13,11 @@ import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.stereotype.Service;
 
+import com.trimark.backoffice.persistence.enumeration.Permission;
 import com.trimark.backoffice.persistence.model.Organization;
-import com.trimark.backoffice.persistence.model.UserCredential;
+import com.trimark.backoffice.persistence.model.Role;
+import com.trimark.backoffice.persistence.model.RoleModulePermission;
+import com.trimark.backoffice.persistence.model.UserAccount;
 
 @Service("backofficeUserDetailsService")
 public class BackofficeUserDetailsService implements UserDetailsService {
@@ -23,7 +26,10 @@ public class BackofficeUserDetailsService implements UserDetailsService {
 	private IOrganizationService organizationService;
 	
 	@Autowired
-	private IUserCredentialService userCredentialService;
+	private IRoleService roleService;
+	
+	@Autowired
+	private IUserAccountService userAccountService;
 
 	@Override
 	public UserDetails loadUserByUsername(String usertoken) throws UsernameNotFoundException {
@@ -31,18 +37,29 @@ public class BackofficeUserDetailsService implements UserDetailsService {
 		String organizationName = strToken.nextToken();
 		String userName = strToken.nextToken();
 		Organization organization = organizationService.findByName(organizationName);
-		UserCredential userCredential = userCredentialService.getUserCredentialByOrganizationAndUserName(organization, userName);
-		if(userCredential == null){
+		UserAccount userAccount = userAccountService.getUserAccountByOrganizationAndUserName(organization, userName);
+		if(userAccount == null){
 			throw new UsernameNotFoundException("Username not found");
 		}
-		return new User(usertoken, userCredential.getPassword(), true, true, true, true, getGrantedAuthorities());
+		Role role = userAccount.getRole();
+		if (role.getName().equals("Superuser")) {
+			role = organization.getRole();
+		}
+		return new User(usertoken, userAccount.getPassword(), true, true, true, true, getGrantedAuthorities(roleService.findRoleModulePermissions(role)));
 	}
 	
-	private List<GrantedAuthority> getGrantedAuthorities() {
+	private List<GrantedAuthority> getGrantedAuthorities(List<RoleModulePermission> roleModulePermissions) {
 		List<GrantedAuthority> grantedAuthorities = new ArrayList<GrantedAuthority>();
-		grantedAuthorities.add(new SimpleGrantedAuthority("ROLE_ORGANIZATIONS_CREATE"));
-		grantedAuthorities.add(new SimpleGrantedAuthority("ROLE_ORGANIZATIONS_READ"));
-		grantedAuthorities.add(new SimpleGrantedAuthority("ROLE_ROLES_CREATE"));
+		for (RoleModulePermission roleModulePermission : roleModulePermissions) {
+			for (int i = 0; i < 32; i++) {
+				int mask = ((1 << i) & roleModulePermission.getPermissions()); 
+				if (mask > 0) {
+					Permission permission = Permission.valueOf(mask);
+					System.out.println("getGrantedAuthorities >>> " + "ROLE_" + roleModulePermission.getModule() + "_" + permission);
+					grantedAuthorities.add(new SimpleGrantedAuthority("ROLE_" + roleModulePermission.getModule() + "_" + permission));
+				}
+			}
+		}
 		return grantedAuthorities;
 	}
 

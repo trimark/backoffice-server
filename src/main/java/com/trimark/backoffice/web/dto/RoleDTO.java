@@ -1,6 +1,7 @@
 package com.trimark.backoffice.web.dto;
 
 import java.io.Serializable;
+import java.util.List;
 
 import com.trimark.backoffice.web.response.model.OrganizationModel;
 
@@ -11,6 +12,8 @@ public class RoleDTO implements Serializable {
 	 */
 	private static final long serialVersionUID = 1L;
 	
+	private int id;
+	
 	private String name;
 	
 	private String type;
@@ -18,6 +21,16 @@ public class RoleDTO implements Serializable {
 	private String description;
 	
 	private OrganizationModel organization;
+	
+	private List<AclEntryDTO> aclEntries;
+	
+	public int getId() {
+		return id;
+	}
+
+	public void setId(int id) {
+		this.id = id;
+	}
 
 	public String getName() {
 		return name;
@@ -49,5 +62,13 @@ public class RoleDTO implements Serializable {
 
 	public void setOrganization(OrganizationModel organization) {
 		this.organization = organization;
+	}
+
+	public List<AclEntryDTO> getAclEntries() {
+		return aclEntries;
+	}
+
+	public void setAclEntries(List<AclEntryDTO> aclEntries) {
+		this.aclEntries = aclEntries;
 	}	
 }

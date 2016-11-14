@@ -13,7 +13,6 @@ import org.springframework.security.config.annotation.web.configuration.WebSecur
 import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.web.access.intercept.FilterSecurityInterceptor;
 import org.springframework.security.web.authentication.Http403ForbiddenEntryPoint;
-import org.springframework.security.web.authentication.UsernamePasswordAuthenticationFilter;
 import org.springframework.web.cors.CorsConfiguration;
 import org.springframework.web.cors.CorsConfigurationSource;
 import org.springframework.web.cors.UrlBasedCorsConfigurationSource;
@@ -41,12 +40,17 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
 		http.csrf().disable()
 			.cors().and()
 			.authorizeRequests().antMatchers("/login", "/organizations/listAll").permitAll()
-				.antMatchers("/organizations/findById/**", "/organizations/listChildOrganizations/**")
-				.hasAnyRole("ORGANIZATIONS_CREATE", "ORGANIZATIONS_READ", "ORGANIZATIONS_UPDATE", "ORGANIZATIONS_DELETE")
+				.antMatchers("/organizations/load/**", "/organizations/listChildOrganizations/**")
+				.hasAnyRole("ORGANIZATIONS_READ", "ORGANIZATIONS_UPDATE", "ORGANIZATIONS_CREATE", "ORGANIZATIONS_DELETE")
 				.antMatchers("/organizations/create").hasRole("ORGANIZATIONS_CREATE")
-				.antMatchers("/roles/listRolesByOwnerAndType/**")
-				.hasAnyRole("ROLES_CREATE", "ROLES_UPDATE", "ROLE_UPDATE", "ROLES_DELETE")
-				.antMatchers("/roles/create").hasRole("ROLES_CREATE")
+				.antMatchers("/roles/findById/**", "/roles/listRolesByOwner/**", "/roles/listRolesByOwnerAndType/**")
+				.hasAnyRole("ROLES_READ", "ROLE_UPDATE", "ROLES_CREATE", "ROLES_DELETE")
+				.antMatchers("/roles/update").hasAnyRole("ROLES_UPDATE", "ROLES_CREATE", "ROLES_DELETE")
+				.antMatchers("/roles/create").hasAnyRole("ROLES_CREATE", "ROLES_DELETE")
+				.antMatchers("/users/findByAccountId/**", "/users/listAllByOrganization/**")
+				.hasAnyRole("USERS_READ", "USERS_UPDATE", "USERS_CREATE", "USERS_DELETE")
+				.antMatchers("/roles/update").hasAnyRole("USERS_UPDATE", "USERS_CREATE", "USERS_DELETE")
+				.antMatchers("/users/create").hasRole("USERS_CREATE")
 				.anyRequest().authenticated()
 				.and()
 			.exceptionHandling().authenticationEntryPoint(new Http403ForbiddenEntryPoint());

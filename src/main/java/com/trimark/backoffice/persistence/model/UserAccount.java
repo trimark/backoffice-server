@@ -13,13 +13,13 @@ import org.springframework.data.domain.Persistable;
 
 @Entity
 @Table(name = "user_credentials")
-public class UserCredential implements Persistable<Long> {
+public class UserAccount implements Persistable<Integer> {
 	
 	/**
 	 * 
 	 */
 	private static final long serialVersionUID = 1L;
-	@Id @GeneratedValue @Column(name = "account_id") private Long id;
+	@Id @GeneratedValue @Column(name = "account_id") private Integer id;
 	
 	@ManyToOne(fetch = FetchType.LAZY)
 	@JoinColumn(name = "organization_id")
@@ -34,11 +34,11 @@ public class UserCredential implements Persistable<Long> {
 	
 	private String password;
 
-	public Long getId() {
+	public Integer getId() {
 		return id;
 	}
 
-	protected void setId(Long id) {
+	protected void setId(Integer id) {
 		this.id = id;
 	}
 

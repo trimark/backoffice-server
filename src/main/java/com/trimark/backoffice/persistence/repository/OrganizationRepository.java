@@ -13,11 +13,18 @@ import com.trimark.backoffice.persistence.model.Organization;
 public class OrganizationRepository extends BaseRepository<Integer, Organization> implements IOrganizationRepository {
 
 	@Override
+	public Organization loadById(int id) {
+		Organization organization = this.findById(id);
+		this.loadChildren(organization);
+		return organization;
+	}
+
+	@Override
 	public Organization findById(int id) {
 		Organization result = getByKey(id);
 		if (result != null)
 		{
-			this.load(result);
+			Hibernate.initialize(result.getRole());
 		}
 		return result;
 	}
@@ -54,22 +61,15 @@ public class OrganizationRepository extends BaseRepository<Integer, Organization
 		super.update(organization);
 	}
 	
-	private void load(Organization organization) {
-		Hibernate.initialize(organization.getParent());
-		Hibernate.initialize(organization.getRole());
-		Hibernate.initialize(organization.getChildren());
-	}
-	
 	private void loadChildren(Organization parent) {
-		if (parent.getChildren() != null)
-		{
-			for (Organization child : parent.getChildren())
-			{
-				this.load(child);
-				this.loadChildren(child);
+		if (parent != null) {
+			Hibernate.initialize(parent.getChildren());
+			if (parent.getChildren() != null) {
+				for (Organization child : parent.getChildren()) {
+					Hibernate.initialize(child.getRole());
+					this.loadChildren(child);
+				}
 			}
-		}		
-	}
-	
-	
+		}
+	}	
 }

@@ -2,7 +2,15 @@ package com.trimark.backoffice.persistence.enumeration;
 
 public enum Module {
 	NONE(0),
-	ORGANIZATION(1);
+	GAMERESULTS(1),
+	ROYALTIES(2),
+	GAMEHISTORY(3),
+	GAMEDEFINITIONS(4),
+	MYGAMES(5),
+	MYACCOUNTS(6),
+	ORGANIZATIONS(7),
+	ROLES(8),
+	USERS(9);
 	
 	private final int value;
 	

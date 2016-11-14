@@ -23,7 +23,15 @@ public class RoleRepository extends BaseRepository<Integer, Role> implements IRo
 		}
 		return result;
 	}
-
+	
+	@SuppressWarnings("unchecked")
+	@Override
+	public List<Role> findAllByOwner(Organization organization) {
+		Criteria criteria = createEntityCriteria();
+		criteria.add(Restrictions.eq("owner", organization));
+		return (List<Role>) criteria.list();
+	}
+	
 	@SuppressWarnings("unchecked")
 	@Override
 	public List<Role> findAllByOwnerAndType(Organization organization, RoleType roleType) {
@@ -33,7 +41,12 @@ public class RoleRepository extends BaseRepository<Integer, Role> implements IRo
 	}
 
 	@Override
-	public void save(Role role) {
+	public void create(Role role) {
 		persist(role);
 	}
+
+	@Override
+	public void update(Role entity) {
+		super.update(entity);
+	}	
 }

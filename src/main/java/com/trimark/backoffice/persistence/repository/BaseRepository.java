@@ -36,6 +36,10 @@ public abstract class BaseRepository<PK extends Serializable, T> {
 		getSession().update(entity);
 	}
 	
+	public void delete(T entity) {
+		getSession().delete(entity);
+	}
+	
 	protected Criteria createEntityCriteria(){
 		return getSession().createCriteria(persistentClass);
 	}

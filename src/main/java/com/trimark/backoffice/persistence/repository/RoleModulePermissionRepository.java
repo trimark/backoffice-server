@@ -19,4 +19,13 @@ public class RoleModulePermissionRepository extends BaseRepository<Long, RoleMod
 		return (List<RoleModulePermission>) criteria.list();
 	}
 
+	@Override
+	public void save(RoleModulePermission roleModulePermission) {
+		persist(roleModulePermission);
+	}
+
+	@Override
+	public void delete(RoleModulePermission entity) {
+		super.delete(entity);
+	}	
 }

@@ -34,12 +34,25 @@ public class OrganizationController {
 	@Autowired
 	private IRoleService roleService;
 	
-	@RequestMapping(value = "/organizations/findById/{id}", method = RequestMethod.GET)
+	@RequestMapping(value = "/organizations/load/{id}", method = RequestMethod.GET)
 	public @ResponseBody ResponseEntity<? extends BackofficeResponse<?>> getOrganization(@PathVariable("id") int id) {
-		Organization organization = organizationService.findById(id);
+		Organization organization = organizationService.loadById(id);
 		Role role = organization.getRole();
-		OrganizationModel model = new OrganizationModel(organization.getId(), organization.getName(), new RoleModel(role.getId(), role.getName()));
+		OrganizationModel model = new OrganizationModel(organization.getId(), organization.getName(), new RoleModel(role.getId(), role.getName(), role.getDescription()));
+		loadChildren(organization, model);
 		return new ResponseEntity<SuccessBackofficeResponse<OrganizationModel>>(new SuccessBackofficeResponse<OrganizationModel>(model), HttpStatus.OK);
+	}
+	
+	private void loadChildren(Organization parent, OrganizationModel parentModel) {
+		if (parent.getChildren() != null) {
+			parentModel.setChildren(new ArrayList<OrganizationModel>());
+			for (Organization organization : parent.getChildren()) {
+				Role role = organization.getRole();
+				OrganizationModel model = new OrganizationModel(organization.getId(), organization.getName(), new RoleModel(role.getId(), role.getName(), role.getDescription()));
+				parentModel.getChildren().add(model);
+				loadChildren(organization, model);
+			}
+		}
 	}
 	
 	@RequestMapping(value = "/organizations/listAll", method = RequestMethod.GET)
@@ -96,7 +109,7 @@ public class OrganizationController {
 	private OrganizationModel createOrganizationModel(Organization organization) {
 		OrganizationModel parent = new OrganizationModel(organization.getParent().getId(), organization.getParent().getName());
 		Role role = organization.getRole();
-		OrganizationModel result = new OrganizationModel(organization.getId(), organization.getName(), new RoleModel(role.getId(), role.getName()));
+		OrganizationModel result = new OrganizationModel(organization.getId(), organization.getName(), new RoleModel(role.getId(), role.getName(), role.getDescription()));
 		result.setParent(parent);
 		result.setChildren(createChildrenOrganizationModel(organization.getChildren()));
 		return result;
@@ -106,7 +119,7 @@ public class OrganizationController {
 		List<OrganizationModel> result = new ArrayList<OrganizationModel>();
 		for (Organization child : organizations) {
 			Role role = child.getRole();
-			OrganizationModel organizationModel = new OrganizationModel(child.getId(), child.getName(), new RoleModel(role.getId(), role.getName()));
+			OrganizationModel organizationModel = new OrganizationModel(child.getId(), child.getName(), new RoleModel(role.getId(), role.getName(), role.getDescription()));
 			organizationModel.setChildren(this.createChildrenOrganizationModel(child.getChildren()));
 			result.add(organizationModel);			
 		}

@@ -27,6 +27,11 @@ public class RoleService implements IRoleService {
 	public Role findById(int id) {
 		return roleRepository.findById(id);
 	}
+	
+	@Override
+	public List<Role> findRolesByOwner(Organization owner) {
+		return roleRepository.findAllByOwner(owner);
+	}
 
 	@Override
 	public List<Role> findRolesByOwnerAndType(Organization owner, RoleType roleType) {
@@ -34,12 +39,32 @@ public class RoleService implements IRoleService {
 	}
 
 	@Override
-	public void saveRole(Role role) {
-		roleRepository.save(role);
+	public void create(Role role) {
+		roleRepository.create(role);
 	}
 	
+	@Override
+	public void update(Role role) {
+		roleRepository.update(role);
+	}
+
 	@Override
 	public List<RoleModulePermission> findRoleModulePermissions(Role role) {
 		return roleModulePermissionRepository.getRoleModulePermissions(role);
 	}
+
+	@Override
+	public void saveRoleModulePermissions(List<RoleModulePermission> roleModulePermissions) {
+		for (RoleModulePermission roleModulePermission : roleModulePermissions) {
+			roleModulePermissionRepository.save(roleModulePermission);
+		}
+	}
+
+	@Override
+	public void deleteRoleModulePermissions(List<RoleModulePermission> roleModulePermissions) {
+		for (RoleModulePermission roleModulePermission : roleModulePermissions) {
+			roleModulePermissionRepository.delete(roleModulePermission);
+		}
+	}
+	
 }

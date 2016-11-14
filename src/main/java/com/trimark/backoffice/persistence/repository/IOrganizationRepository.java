@@ -6,6 +6,8 @@ import com.trimark.backoffice.persistence.model.Organization;
 
 public interface IOrganizationRepository {
 	
+	Organization loadById(int id);
+	
 	Organization findById(int id);
 	
 	Organization findByName(String name);

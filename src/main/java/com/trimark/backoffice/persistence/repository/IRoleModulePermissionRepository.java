@@ -7,5 +7,9 @@ import com.trimark.backoffice.persistence.model.RoleModulePermission;
 
 public interface IRoleModulePermissionRepository {
 	
-	List<RoleModulePermission> getRoleModulePermissions(Role role); 
+	List<RoleModulePermission> getRoleModulePermissions(Role role);
+	
+	void save(RoleModulePermission roleModulePermission);
+	
+	void delete(RoleModulePermission roleModulePermission);
 }

@@ -10,7 +10,11 @@ public interface IRoleRepository {
 	
 	Role findById(int id);
 	
+	List<Role> findAllByOwner(Organization organization);
+	
 	List<Role> findAllByOwnerAndType(Organization organization, RoleType roleType);
 	
-	void save(Role role);
+	void create(Role role);
+	
+	void update(Role role);
 }
