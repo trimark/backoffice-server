@@ -1,2 +1,4 @@
 target/classes
-m2e-wtp
+target/m2e-wtp
+target/backoffice-server-1.0-SNAPSHOT
+target/maven-archiver
