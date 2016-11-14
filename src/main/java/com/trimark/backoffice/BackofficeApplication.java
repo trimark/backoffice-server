@@ -17,15 +17,22 @@ package com.trimark.backoffice;
 
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
+import org.springframework.boot.builder.SpringApplicationBuilder;
+import org.springframework.boot.context.web.SpringBootServletInitializer;
 
 /**
- * @author Joe Grandja
+ * @author Rizal Pascual
  */
 @SpringBootApplication
-public class InsecureApplication {
-
+public class BackofficeApplication extends SpringBootServletInitializer {
+	
+	@Override
+    protected SpringApplicationBuilder configure(SpringApplicationBuilder application) {
+        return application.sources(BackofficeApplication.class);
+    }
+	
 	public static void main(String[] args) {
-		SpringApplication.run(InsecureApplication.class, args);
+		SpringApplication.run(BackofficeApplication.class, args);
 	}
 
 
