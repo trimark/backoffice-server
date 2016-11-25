@@ -18,5 +18,7 @@ public interface IUserAccountService {
 	
 	void create(UserAccount userAccount, List<UserAccountProperty> userAccountProperties);
 	
+	void update(UserAccount userAccount);
+	
 	void updateAccountProperties(List<UserAccountProperty> userAccountProperties);
 }

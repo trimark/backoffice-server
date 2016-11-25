@@ -52,4 +52,9 @@ public class UserAccountRepository extends BaseRepository<Integer, UserAccount> 
 	public void create(UserAccount userAccount) {
 		persist(userAccount);
 	}
+
+	@Override
+	public void update(UserAccount userAccount) {
+		super.update(userAccount);
+	}	
 }

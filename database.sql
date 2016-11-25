@@ -54,7 +54,7 @@ INSERT INTO `organizations` VALUES (1,0,0,'root'),(2,1,1,'trimark');
 
 INSERT INTO `user_credentials` VALUES (1,2,2,'superuser','password');
 
-INSERT INTO `user_props` VALUES (1,1,'name','Charley Brewster'),(1,1,'phone','+171111111'),(1,1,'mobile','+171000001'),(1,1,'email','charley@frightnight.com');
+INSERT INTO `user_props` VALUES (1,1,'name','Charley Brewster'),(2,1,'phone','+171111111'),(3,1,'mobile','+171000001'),(4,1,'email','charley@frightnight.com');
 
 INSERT INTO `roles` VALUES (1,1,'Supplier',1,'Supplier'),(2,2,'Superuser',2,'Superuser');
 

@@ -14,4 +14,6 @@ public interface IUserAccountRepository {
 	List<UserAccount> findAllByOrganization(Organization organization);
 	
 	void create(UserAccount userAccount);
+	
+	void update(UserAccount userAccount);
 }

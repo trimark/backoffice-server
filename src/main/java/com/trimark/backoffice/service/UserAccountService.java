@@ -50,6 +50,11 @@ public class UserAccountService implements IUserAccountService {
 			userAccountPropertyRepository.create(userAccountProperty);
 		}
 	}
+	
+	@Override
+	public void update(UserAccount userAccount) {
+		userAccountRepository.update(userAccount);
+	}
 
 	@Override
 	public void updateAccountProperties(List<UserAccountProperty> userAccountProperties) {

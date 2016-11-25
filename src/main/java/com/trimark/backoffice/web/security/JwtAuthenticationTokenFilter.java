@@ -22,13 +22,12 @@ public class JwtAuthenticationTokenFilter extends AbstractAuthenticationProcessi
 	@Override
 	public Authentication attemptAuthentication(HttpServletRequest request, HttpServletResponse response)
 			throws AuthenticationException, IOException, ServletException {
-		String jwtToken= request.getHeader("Jwt-Token");
-		System.out.println("jwt-Token >>> " + jwtToken);
-		Authentication current = SecurityContextHolder.getContext().getAuthentication(); 
-		if (jwtToken != null)
+		System.out.println("jwt-Token >>> " + request.getHeader("Jwt-Token"));
+		if (request.getHeader("Jwt-Token") != null)
 		{
+			String[] userToken = request.getHeader("Jwt-Token").split("\\|");
 			UsernamePasswordAuthenticationToken authRequest = new UsernamePasswordAuthenticationToken(
-					"trimark/superuser", "password");
+					userToken[0].split("=")[1] + "/" + userToken[1].split("=")[1], userToken[2].split("=")[1]);
 			try {
 				return getAuthenticationManager().authenticate(authRequest);
 			}
