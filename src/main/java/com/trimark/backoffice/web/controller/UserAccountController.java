@@ -20,6 +20,7 @@ import com.trimark.backoffice.persistence.model.UserAccountProperty;
 import com.trimark.backoffice.service.IOrganizationService;
 import com.trimark.backoffice.service.IRoleService;
 import com.trimark.backoffice.service.IUserAccountService;
+import com.trimark.backoffice.web.dto.ChangePasswordDTO;
 import com.trimark.backoffice.web.dto.PropertyDTO;
 import com.trimark.backoffice.web.dto.UserAccountDTO;
 import com.trimark.backoffice.web.response.BackofficeResponse;
@@ -123,6 +124,14 @@ public class UserAccountController {
 			e.printStackTrace();
 			return new ResponseEntity<ErrorBackofficeResponse>(new ErrorBackofficeResponse(-1, "Technical Error"), HttpStatus.BAD_REQUEST);
 		}
+	}
+	
+	@RequestMapping(value = "/users/changePassword/{accountId}", method = RequestMethod.POST)
+	public @ResponseBody ResponseEntity<? extends BackofficeResponse<?>> changePassword(@PathVariable("accountId") int accountId, @RequestBody ChangePasswordDTO changePasswordDTO) {
+		UserAccount userAccount = userAccountService.getUserAccountByAccountId(accountId);
+		userAccount.setPassword(changePasswordDTO.getNewPassword());
+		userAccountService.update(userAccount);
+		return new ResponseEntity<SuccessBackofficeResponse<String>>(new SuccessBackofficeResponse<String>("Password Changed Successfully!!!"), HttpStatus.OK);
 	}
 	
 	private void loadUserAccount(Organization organization, List<UserAccountModel> model) {

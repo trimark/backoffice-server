@@ -49,8 +49,9 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
 				.antMatchers("/roles/create").hasAnyRole("ROLES_CREATE", "ROLES_DELETE")
 				.antMatchers("/users/findByAccountId/**", "/users/listAllByOrganization/**")
 				.hasAnyRole("USERS_READ", "USERS_UPDATE", "USERS_CREATE", "USERS_DELETE")
-				.antMatchers("/roles/update").hasAnyRole("USERS_UPDATE", "USERS_CREATE", "USERS_DELETE")
-				.antMatchers("/users/create").hasRole("USERS_CREATE")
+				.antMatchers("/users/update").hasAnyRole("USERS_UPDATE", "USERS_CREATE", "USERS_DELETE")
+				.antMatchers("/users/changePassword/**").hasAnyRole("USERS_CHANGEPASSWORD", "USERS_CREATE", "USERS_DELETE")
+				.antMatchers("/users/create").hasAnyRole("USERS_CREATE", "USERS_DELETE")
 				.anyRequest().authenticated()
 				.and()
 			.exceptionHandling().authenticationEntryPoint(new Http403ForbiddenEntryPoint());

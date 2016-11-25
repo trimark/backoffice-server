@@ -17,7 +17,7 @@ public class ErrorBackofficeResponse extends BackofficeResponse<String> implemen
 	}
 	
 	@Override
-	String getData() {
+	public String getData() {
 		return message;
 	}	
 }

@@ -7,6 +7,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.authentication.BadCredentialsException;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.authentication.dao.DaoAuthenticationProvider;
 import org.springframework.security.core.Authentication;
@@ -116,8 +117,12 @@ public class MyAccountController {
 			}
 			else
 			{
-				return new ResponseEntity<ErrorBackofficeResponse>(new ErrorBackofficeResponse(1, "Login Failed"), HttpStatus.BAD_REQUEST);
+				return new ResponseEntity<ErrorBackofficeResponse>(new ErrorBackofficeResponse(1, "Wrong username/password!!!"), HttpStatus.BAD_REQUEST);
 			}
+		}
+		catch (BadCredentialsException e) {
+			e.printStackTrace();
+			return new ResponseEntity<ErrorBackofficeResponse>(new ErrorBackofficeResponse(-1, "Wrong username/password!!!"), HttpStatus.BAD_REQUEST);
 		}
 		catch (Exception e) {
 			e.printStackTrace();

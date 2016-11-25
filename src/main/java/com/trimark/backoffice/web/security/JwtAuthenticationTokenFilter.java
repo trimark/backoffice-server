@@ -23,7 +23,7 @@ public class JwtAuthenticationTokenFilter extends AbstractAuthenticationProcessi
 	public Authentication attemptAuthentication(HttpServletRequest request, HttpServletResponse response)
 			throws AuthenticationException, IOException, ServletException {
 		System.out.println("jwt-Token >>> " + request.getHeader("Jwt-Token"));
-		if (request.getHeader("Jwt-Token") != null)
+		if (request.getHeader("Jwt-Token") != null && !request.getHeader("Jwt-Token").equals("null"))
 		{
 			String[] userToken = request.getHeader("Jwt-Token").split("\\|");
 			UsernamePasswordAuthenticationToken authRequest = new UsernamePasswordAuthenticationToken(
