@@ -2,7 +2,7 @@ package com.trimark.backoffice.web.dto;
 
 import java.io.Serializable;
 
-import com.trimark.backoffice.web.response.model.OrganizationModel;
+import com.trimark.backoffice.model.OrganizationModel;
 
 public class LoginDTO implements Serializable {
 	

@@ -21,7 +21,7 @@ import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 
-import com.trimark.backoffice.persistence.model.Organization;
+import com.trimark.backoffice.persistence.model.OrganizationPersistenceModel;
 import com.trimark.backoffice.service.IOrganizationService;
 import com.trimark.backoffice.service.IRoleService;
 
@@ -40,7 +40,7 @@ public class MainController {
 	@RequestMapping("/")
 	public String root() {
 		try {
-			Organization organization = organizationService.findById(2);
+			OrganizationPersistenceModel organization = organizationService.findById(2);
 		}
 		catch (Exception e) {
 			e.printStackTrace();

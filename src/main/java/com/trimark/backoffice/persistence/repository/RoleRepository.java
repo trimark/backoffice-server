@@ -7,16 +7,16 @@ import org.hibernate.Hibernate;
 import org.hibernate.criterion.Restrictions;
 import org.springframework.stereotype.Repository;
 
-import com.trimark.backoffice.persistence.enumeration.RoleType;
-import com.trimark.backoffice.persistence.model.Organization;
-import com.trimark.backoffice.persistence.model.Role;
+import com.trimark.backoffice.enumeration.RoleType;
+import com.trimark.backoffice.persistence.model.OrganizationPersistenceModel;
+import com.trimark.backoffice.persistence.model.RolePersistenceModel;
 
 @Repository("roleRepository")
-public class RoleRepository extends BaseRepository<Integer, Role> implements IRoleRepository {
+public class RoleRepository extends BaseRepository<Integer, RolePersistenceModel> implements IRoleRepository {
 	
 	@Override
-	public Role findById(int id) {
-		Role result = getByKey(id);
+	public RolePersistenceModel findById(int id) {
+		RolePersistenceModel result = getByKey(id);
 		if (result != null)
 		{
 			Hibernate.initialize(result.getOwner());
@@ -26,27 +26,27 @@ public class RoleRepository extends BaseRepository<Integer, Role> implements IRo
 	
 	@SuppressWarnings("unchecked")
 	@Override
-	public List<Role> findAllByOwner(Organization organization) {
+	public List<RolePersistenceModel> findAllByOwner(OrganizationPersistenceModel organization) {
 		Criteria criteria = createEntityCriteria();
 		criteria.add(Restrictions.eq("owner", organization));
-		return (List<Role>) criteria.list();
+		return (List<RolePersistenceModel>) criteria.list();
 	}
 	
 	@SuppressWarnings("unchecked")
 	@Override
-	public List<Role> findAllByOwnerAndType(Organization organization, RoleType roleType) {
+	public List<RolePersistenceModel> findAllByOwnerAndType(OrganizationPersistenceModel organization, RoleType roleType) {
 		Criteria criteria = createEntityCriteria();
 		criteria.add(Restrictions.and(Restrictions.eq("owner", organization), Restrictions.eq("roleType", roleType)));
-		return (List<Role>) criteria.list();
+		return (List<RolePersistenceModel>) criteria.list();
 	}
 
 	@Override
-	public void create(Role role) {
+	public void create(RolePersistenceModel role) {
 		persist(role);
 	}
 
 	@Override
-	public void update(Role entity) {
+	public void update(RolePersistenceModel entity) {
 		super.update(entity);
 	}	
 }

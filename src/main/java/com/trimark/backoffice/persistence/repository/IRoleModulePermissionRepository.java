@@ -2,14 +2,14 @@ package com.trimark.backoffice.persistence.repository;
 
 import java.util.List;
 
-import com.trimark.backoffice.persistence.model.Role;
-import com.trimark.backoffice.persistence.model.RoleModulePermission;
+import com.trimark.backoffice.persistence.model.RolePersistenceModel;
+import com.trimark.backoffice.persistence.model.RoleModulePermissionPersistenceModel;
 
 public interface IRoleModulePermissionRepository {
 	
-	List<RoleModulePermission> getRoleModulePermissions(Role role);
+	List<RoleModulePermissionPersistenceModel> getRoleModulePermissions(RolePersistenceModel role);
 	
-	void save(RoleModulePermission roleModulePermission);
+	void save(RoleModulePermissionPersistenceModel roleModulePermission);
 	
-	void delete(RoleModulePermission roleModulePermission);
+	void delete(RoleModulePermissionPersistenceModel roleModulePermission);
 }

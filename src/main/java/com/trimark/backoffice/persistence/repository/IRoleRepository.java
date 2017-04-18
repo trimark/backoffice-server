@@ -2,19 +2,19 @@ package com.trimark.backoffice.persistence.repository;
 
 import java.util.List;
 
-import com.trimark.backoffice.persistence.enumeration.RoleType;
-import com.trimark.backoffice.persistence.model.Organization;
-import com.trimark.backoffice.persistence.model.Role;
+import com.trimark.backoffice.enumeration.RoleType;
+import com.trimark.backoffice.persistence.model.OrganizationPersistenceModel;
+import com.trimark.backoffice.persistence.model.RolePersistenceModel;
 
 public interface IRoleRepository {
 	
-	Role findById(int id);
+	RolePersistenceModel findById(int id);
 	
-	List<Role> findAllByOwner(Organization organization);
+	List<RolePersistenceModel> findAllByOwner(OrganizationPersistenceModel organization);
 	
-	List<Role> findAllByOwnerAndType(Organization organization, RoleType roleType);
+	List<RolePersistenceModel> findAllByOwnerAndType(OrganizationPersistenceModel organization, RoleType roleType);
 	
-	void create(Role role);
+	void create(RolePersistenceModel role);
 	
-	void update(Role role);
+	void update(RolePersistenceModel role);
 }

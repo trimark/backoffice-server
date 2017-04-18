@@ -52,6 +52,11 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
 				.antMatchers("/users/update").hasAnyRole("USERS_UPDATE", "USERS_CREATE", "USERS_DELETE")
 				.antMatchers("/users/changePassword/**").hasAnyRole("USERS_CHANGEPASSWORD", "USERS_CREATE", "USERS_DELETE")
 				.antMatchers("/users/create").hasAnyRole("USERS_CREATE", "USERS_DELETE")
+				.antMatchers("/games/findAllBaseGamesByCategory/**", "/games/findAllTitleGames")
+				.hasAnyRole("GAMES_READ", "GAMES_UPDATE", "GAMES_CREATE", "GAMES_DELETE")
+				.antMatchers("/lotteries/findAllLotteries", "/lotteries/findAllModels")
+				.hasAnyRole("LOTTERIES_READ", "LOTTERIES_UPDATE", "LOTTERIES_CREATE", "LOTTERIES_DELETE")
+				.antMatchers("/lotteries/models/create").hasAnyRole("LOTTERIES_CREATE", "LOTTERIES_DELETE")
 				.anyRequest().authenticated()
 				.and()
 			.exceptionHandling().authenticationEntryPoint(new Http403ForbiddenEntryPoint());
@@ -71,7 +76,7 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
 		return source;
 	}
 	
-	 @Bean
+	@Bean
     public JwtAuthenticationTokenFilter authenticationTokenFilterBean() throws Exception {
         JwtAuthenticationTokenFilter authenticationTokenFilter = new JwtAuthenticationTokenFilter();
         authenticationTokenFilter.setAuthenticationManager(authenticationManager());

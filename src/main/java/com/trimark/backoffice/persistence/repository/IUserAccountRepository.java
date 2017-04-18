@@ -2,18 +2,18 @@ package com.trimark.backoffice.persistence.repository;
 
 import java.util.List;
 
-import com.trimark.backoffice.persistence.model.Organization;
-import com.trimark.backoffice.persistence.model.UserAccount;
+import com.trimark.backoffice.persistence.model.OrganizationPersistenceModel;
+import com.trimark.backoffice.persistence.model.UserAccountPersistenceModel;
 
 public interface IUserAccountRepository {
 	
-	UserAccount findByAccountId(int accountId);
+	UserAccountPersistenceModel findByAccountId(int accountId);
 	
-	UserAccount getUserAccountByOrganizationAndUserName(Organization organization, String userName);
+	UserAccountPersistenceModel getUserAccountByOrganizationAndUserName(OrganizationPersistenceModel organization, String userName);
 	
-	List<UserAccount> findAllByOrganization(Organization organization);
+	List<UserAccountPersistenceModel> findAllByOrganization(OrganizationPersistenceModel organization);
 	
-	void create(UserAccount userAccount);
+	void create(UserAccountPersistenceModel userAccount);
 	
-	void update(UserAccount userAccount);
+	void update(UserAccountPersistenceModel userAccount);
 }

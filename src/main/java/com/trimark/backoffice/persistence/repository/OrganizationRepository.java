@@ -7,21 +7,21 @@ import org.hibernate.Hibernate;
 import org.hibernate.criterion.Restrictions;
 import org.springframework.stereotype.Repository;
 
-import com.trimark.backoffice.persistence.model.Organization;
+import com.trimark.backoffice.persistence.model.OrganizationPersistenceModel;
 
 @Repository("organizationRepository")
-public class OrganizationRepository extends BaseRepository<Integer, Organization> implements IOrganizationRepository {
+public class OrganizationRepository extends BaseRepository<Integer, OrganizationPersistenceModel> implements IOrganizationRepository {
 
 	@Override
-	public Organization loadById(int id) {
-		Organization organization = this.findById(id);
+	public OrganizationPersistenceModel loadById(int id) {
+		OrganizationPersistenceModel organization = this.findById(id);
 		this.loadChildren(organization);
 		return organization;
 	}
 
 	@Override
-	public Organization findById(int id) {
-		Organization result = getByKey(id);
+	public OrganizationPersistenceModel findById(int id) {
+		OrganizationPersistenceModel result = getByKey(id);
 		if (result != null)
 		{
 			Hibernate.initialize(result.getRole());
@@ -30,42 +30,42 @@ public class OrganizationRepository extends BaseRepository<Integer, Organization
 	}
 
 	@Override
-	public Organization findByName(String name) {
+	public OrganizationPersistenceModel findByName(String name) {
 		Criteria criteria = createEntityCriteria();
 		criteria.add(Restrictions.eq("name", name));
-		return (Organization) criteria.uniqueResult();
+		return (OrganizationPersistenceModel) criteria.uniqueResult();
 	}
 
 	@SuppressWarnings("unchecked")
 	@Override
-	public List<Organization> findAll() {
+	public List<OrganizationPersistenceModel> findAll() {
 		Criteria criteria = createEntityCriteria();
 		criteria.add(Restrictions.ne("id", 1));
-		return (List<Organization>) criteria.list();
+		return (List<OrganizationPersistenceModel>) criteria.list();
 	}
 
 	@Override
-	public List<Organization> findAllChildOrganization(int id) {
-		Organization organization = this.findById(id);
+	public List<OrganizationPersistenceModel> findAllChildOrganization(int id) {
+		OrganizationPersistenceModel organization = this.findById(id);
 		this.loadChildren(organization);
 		return organization.getChildren();
 	}
 	
 	@Override
-	public void create(Organization organization) {
+	public void create(OrganizationPersistenceModel organization) {
 		persist(organization);
 	}
 	
 	@Override
-	public void update(Organization organization) {
+	public void update(OrganizationPersistenceModel organization) {
 		super.update(organization);
 	}
 	
-	private void loadChildren(Organization parent) {
+	private void loadChildren(OrganizationPersistenceModel parent) {
 		if (parent != null) {
 			Hibernate.initialize(parent.getChildren());
 			if (parent.getChildren() != null) {
-				for (Organization child : parent.getChildren()) {
+				for (OrganizationPersistenceModel child : parent.getChildren()) {
 					Hibernate.initialize(child.getRole());
 					this.loadChildren(child);
 				}

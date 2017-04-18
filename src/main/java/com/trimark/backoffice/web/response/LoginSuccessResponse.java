@@ -1,6 +1,6 @@
 package com.trimark.backoffice.web.response;
 
-import com.trimark.backoffice.web.response.model.LoginSuccessModel;
+import com.trimark.backoffice.model.LoginSuccessModel;
 
 public class LoginSuccessResponse extends BackofficeResponse<LoginSuccessModel> {
 	

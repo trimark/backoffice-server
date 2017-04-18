@@ -3,7 +3,7 @@ package com.trimark.backoffice.web.dto;
 import java.io.Serializable;
 import java.util.List;
 
-import com.trimark.backoffice.web.response.model.OrganizationModel;
+import com.trimark.backoffice.model.OrganizationModel;
 
 public class RoleDTO implements Serializable {
 

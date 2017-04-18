@@ -49,6 +49,34 @@ CREATE TABLE `role_module_permissions` (
   `permissions` bigint(20) DEFAULT NULL,
   PRIMARY KEY (`id`)
 ) ENGINE=InnoDB AUTO_INCREMENT=2 DEFAULT CHARSET=utf8;
+	
+DROP TABLE IF EXISTS `scratch_lottery_models`;
+CREATE TABLE `scratch_lottery_models` (
+  `id` bigint(20) NOT NULL AUTO_INCREMENT,
+  `model_name` varchar(50) NOT NULL,
+  `variant_name` varchar(50) NOT NULL,
+  `multipliers` varchar(50) NULL,
+  `near_wins_pair_high` varchar(50) NULL,
+  `near_wins_pair_low` varchar(50) NULL,
+  `distinct_win_pattern` varchar(50) NULL,
+  `near_wins_pair_prob_pct` varchar(50) NULL,
+  `near_wins_prize_prob_pct` varchar(50) NULL,
+  `near_wins_multiplier_prob_pct` varchar(50) NULL,
+  `grid_column` bigint(2) DEFAULT NULL,
+  `grid_row` bigint(2) DEFAULT NULL,
+  `num_of_lines` bigint(2) DEFAULT NULL,
+  `num_of_prizes` bigint(2) DEFAULT NULL,
+  `num_of_multipliers` bigint(2) DEFAULT NULL,
+  `row_matches` bigint(2) DEFAULT NULL,
+  `column_matches` bigint(2) DEFAULT NULL,
+  `diagonal_matches` bigint(2) DEFAULT NULL,
+  `win_mechanic` bigint(2) DEFAULT NULL,
+  `scratch_mechanic` bigint(2) DEFAULT NULL,
+  `match_mechanic` bigint(2) DEFAULT NULL,
+  `anticipantion_control` bigint(2) DEFAULT NULL,
+  `permissions` bigint(20) DEFAULT NULL,
+  PRIMARY KEY (`id`)
+) ENGINE=InnoDB AUTO_INCREMENT=2 DEFAULT CHARSET=utf8;
 
 INSERT INTO `organizations` VALUES (1,0,0,'root'),(2,1,1,'trimark');
 

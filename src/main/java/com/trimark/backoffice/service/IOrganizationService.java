@@ -2,20 +2,20 @@ package com.trimark.backoffice.service;
 
 import java.util.List;
 
-import com.trimark.backoffice.persistence.model.Organization;
+import com.trimark.backoffice.persistence.model.OrganizationPersistenceModel;
 
 public interface IOrganizationService {
-	Organization loadById(int id);
+	OrganizationPersistenceModel loadById(int id);
 	
-	Organization findById(int id);
+	OrganizationPersistenceModel findById(int id);
 	
-	Organization findByName(String name);
+	OrganizationPersistenceModel findByName(String name);
 	
-	List<Organization> findAll();
+	List<OrganizationPersistenceModel> findAll();
 	
-	List<Organization> findAllChildOrganization(int id);
+	List<OrganizationPersistenceModel> findAllChildOrganization(int id);
 	
-	void create(Organization organization);
+	void create(OrganizationPersistenceModel organization);
 	
-	void update(Organization organization);
+	void update(OrganizationPersistenceModel organization);
 }

@@ -29,7 +29,10 @@ public class JwtAuthenticationTokenFilter extends AbstractAuthenticationProcessi
 			UsernamePasswordAuthenticationToken authRequest = new UsernamePasswordAuthenticationToken(
 					userToken[0].split("=")[1] + "/" + userToken[1].split("=")[1], userToken[2].split("=")[1]);
 			try {
-				return getAuthenticationManager().authenticate(authRequest);
+				UsernamePasswordAuthenticationToken usernamePasswordAuthenticationToken = (UsernamePasswordAuthenticationToken) getAuthenticationManager().authenticate(authRequest);
+				BackofficeUsernamePasswordAuthenticationToken result = new BackofficeUsernamePasswordAuthenticationToken(usernamePasswordAuthenticationToken);
+				result.setGameSessionId(userToken[3].split("=")[1]);
+				return result;
 			}
 			catch (Exception e) {
 				e.printStackTrace();

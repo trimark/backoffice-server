@@ -13,12 +13,14 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.ResponseBody;
 
-import com.trimark.backoffice.persistence.enumeration.Module;
-import com.trimark.backoffice.persistence.enumeration.Permission;
-import com.trimark.backoffice.persistence.enumeration.RoleType;
-import com.trimark.backoffice.persistence.model.Organization;
-import com.trimark.backoffice.persistence.model.Role;
-import com.trimark.backoffice.persistence.model.RoleModulePermission;
+import com.trimark.backoffice.enumeration.Module;
+import com.trimark.backoffice.enumeration.Permission;
+import com.trimark.backoffice.enumeration.RoleType;
+import com.trimark.backoffice.model.ModulePermissionsModel;
+import com.trimark.backoffice.model.RoleModel;
+import com.trimark.backoffice.persistence.model.OrganizationPersistenceModel;
+import com.trimark.backoffice.persistence.model.RolePersistenceModel;
+import com.trimark.backoffice.persistence.model.RoleModulePermissionPersistenceModel;
 import com.trimark.backoffice.service.IOrganizationService;
 import com.trimark.backoffice.service.IRoleService;
 import com.trimark.backoffice.web.dto.AclEntryDTO;
@@ -26,8 +28,6 @@ import com.trimark.backoffice.web.dto.RoleDTO;
 import com.trimark.backoffice.web.response.BackofficeResponse;
 import com.trimark.backoffice.web.response.ErrorBackofficeResponse;
 import com.trimark.backoffice.web.response.SuccessBackofficeResponse;
-import com.trimark.backoffice.web.response.model.ModulePermissionsModel;
-import com.trimark.backoffice.web.response.model.RoleModel;
 
 @Controller
 public class RoleController {
@@ -40,12 +40,12 @@ public class RoleController {
 	
 	@RequestMapping(value = "/roles/findById/{id}", method = RequestMethod.GET)
 	public @ResponseBody ResponseEntity<? extends BackofficeResponse<?>> getRole(@PathVariable("id") int id) {
-		Role role = roleService.findById(id);
+		RolePersistenceModel role = roleService.findById(id);
 		RoleModel roleModel = new RoleModel(role.getId(), role.getName(), role.getDescription());
 		roleModel.setType(role.getRoleType());
-		List<RoleModulePermission> roleModulePermissions = roleService.findRoleModulePermissions(role);
+		List<RoleModulePermissionPersistenceModel> roleModulePermissions = roleService.findRoleModulePermissions(role);
 		List<ModulePermissionsModel> modulePermissions = new ArrayList<ModulePermissionsModel>();
-		for (RoleModulePermission roleModulePermission : roleModulePermissions) {
+		for (RoleModulePermissionPersistenceModel roleModulePermission : roleModulePermissions) {
 			List<Permission> permissions = new ArrayList<Permission>();
 			for (int i = 0; i < 32; i++) {
 				int mask = ((1 << i) & roleModulePermission.getPermissions()); 
@@ -61,10 +61,10 @@ public class RoleController {
 	
 	@RequestMapping(value = "/roles/listRolesByOwner/{organizationId}", method = RequestMethod.GET)
 	public @ResponseBody ResponseEntity<? extends BackofficeResponse<?>> getRoles(@PathVariable("organizationId") int organizationId) {
-		Organization owner = organizationService.findById(organizationId);
-		List<Role> roles = roleService.findRolesByOwner(owner);
+		OrganizationPersistenceModel owner = organizationService.findById(organizationId);
+		List<RolePersistenceModel> roles = roleService.findRolesByOwner(owner);
 		List<RoleModel> models = new ArrayList<RoleModel>();
-		for (Role role : roles)
+		for (RolePersistenceModel role : roles)
 		{
 			if (!role.getName().equalsIgnoreCase("superuser"))
 			{
@@ -78,10 +78,10 @@ public class RoleController {
 	
 	@RequestMapping(value = "/roles/listRolesByOwnerAndType/{organizationId}/{roleType}", method = RequestMethod.GET)
 	public @ResponseBody ResponseEntity<? extends BackofficeResponse<?>> getRolesByType(@PathVariable("organizationId") int organizationId, @PathVariable("roleType") String roleType) {
-		Organization owner = organizationService.findById(organizationId);
-		List<Role> roles = roleService.findRolesByOwnerAndType(owner, Enum.valueOf(RoleType.class, roleType));
+		OrganizationPersistenceModel owner = organizationService.findById(organizationId);
+		List<RolePersistenceModel> roles = roleService.findRolesByOwnerAndType(owner, Enum.valueOf(RoleType.class, roleType));
 		List<RoleModel> models = new ArrayList<RoleModel>();
-		for (Role role : roles)
+		for (RolePersistenceModel role : roles)
 		{
 			if (!role.getName().equalsIgnoreCase("superuser"))
 			{
@@ -96,20 +96,20 @@ public class RoleController {
 	@RequestMapping(value = "/roles/create", method = RequestMethod.POST)
 	public @ResponseBody ResponseEntity<? extends BackofficeResponse<?>> create(@RequestBody RoleDTO roleDTO) {
 		try {
-			Role role = new Role();
+			RolePersistenceModel role = new RolePersistenceModel();
 			role.setName(roleDTO.getName());
 			role.setDescription(roleDTO.getDescription());
 			role.setOwner(organizationService.findById(roleDTO.getOrganization().getId()));
 			role.setRoleType(Enum.valueOf(RoleType.class, roleDTO.getType()));
 			roleService.create(role);
 			List<AclEntryDTO> aclEntries = roleDTO.getAclEntries();
-			List<RoleModulePermission> roleModulePermissions = new ArrayList<RoleModulePermission>();
+			List<RoleModulePermissionPersistenceModel> roleModulePermissions = new ArrayList<RoleModulePermissionPersistenceModel>();
 			for (AclEntryDTO aclEntry : aclEntries) {
 				int permissions = 0;
 				for (String permission : aclEntry.getPermissions()) {
 					permissions = permissions + Enum.valueOf(Permission.class, permission).getValue();
 				}
-				RoleModulePermission roleModulePermission = new RoleModulePermission();
+				RoleModulePermissionPersistenceModel roleModulePermission = new RoleModulePermissionPersistenceModel();
 				roleModulePermission.setRole(role);
 				roleModulePermission.setModule(Enum.valueOf(Module.class, aclEntry.getModule()));
 				roleModulePermission.setPermissions(permissions);
@@ -127,18 +127,18 @@ public class RoleController {
 	@RequestMapping(value = "/roles/update", method = RequestMethod.POST)
 	public @ResponseBody ResponseEntity<? extends BackofficeResponse<?>> update(@RequestBody RoleDTO roleDTO) {
 		try {
-			Role role = roleService.findById(roleDTO.getId());
+			RolePersistenceModel role = roleService.findById(roleDTO.getId());
 			role.setDescription(roleDTO.getDescription());
 			roleService.update(role);
 			roleService.deleteRoleModulePermissions(roleService.findRoleModulePermissions(role));
 			List<AclEntryDTO> aclEntries = roleDTO.getAclEntries();
-			List<RoleModulePermission> roleModulePermissions = new ArrayList<RoleModulePermission>();
+			List<RoleModulePermissionPersistenceModel> roleModulePermissions = new ArrayList<RoleModulePermissionPersistenceModel>();
 			for (AclEntryDTO aclEntry : aclEntries) {
 				int permissions = 0;
 				for (String permission : aclEntry.getPermissions()) {
 					permissions = permissions + Enum.valueOf(Permission.class, permission).getValue();
 				}
-				RoleModulePermission roleModulePermission = new RoleModulePermission();
+				RoleModulePermissionPersistenceModel roleModulePermission = new RoleModulePermissionPersistenceModel();
 				roleModulePermission.setRole(role);
 				roleModulePermission.setModule(Enum.valueOf(Module.class, aclEntry.getModule()));
 				roleModulePermission.setPermissions(permissions);

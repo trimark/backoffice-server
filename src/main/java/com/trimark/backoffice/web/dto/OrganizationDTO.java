@@ -2,8 +2,8 @@ package com.trimark.backoffice.web.dto;
 
 import java.io.Serializable;
 
-import com.trimark.backoffice.web.response.model.OrganizationModel;
-import com.trimark.backoffice.web.response.model.RoleModel;
+import com.trimark.backoffice.model.OrganizationModel;
+import com.trimark.backoffice.model.RoleModel;
 
 public class OrganizationDTO implements Serializable {
 	

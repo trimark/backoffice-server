@@ -2,23 +2,23 @@ package com.trimark.backoffice.service;
 
 import java.util.List;
 
-import com.trimark.backoffice.persistence.model.Organization;
-import com.trimark.backoffice.persistence.model.UserAccount;
-import com.trimark.backoffice.persistence.model.UserAccountProperty;
+import com.trimark.backoffice.persistence.model.OrganizationPersistenceModel;
+import com.trimark.backoffice.persistence.model.UserAccountPersistenceModel;
+import com.trimark.backoffice.persistence.model.UserAccountPropertyPersistenceModel;
 
 public interface IUserAccountService {
 	
-	UserAccount getUserAccountByAccountId(int accountId);
+	UserAccountPersistenceModel getUserAccountByAccountId(int accountId);
 	
-	UserAccount getUserAccountByOrganizationAndUserName(Organization organization, String userName);
+	UserAccountPersistenceModel getUserAccountByOrganizationAndUserName(OrganizationPersistenceModel organization, String userName);
 	
-	List<UserAccount> findAllByOrganization(Organization organization);
+	List<UserAccountPersistenceModel> findAllByOrganization(OrganizationPersistenceModel organization);
 	
-	List<UserAccountProperty> findAllUserAccountProperty(UserAccount userAccount);
+	List<UserAccountPropertyPersistenceModel> findAllUserAccountProperty(UserAccountPersistenceModel userAccount);
 	
-	void create(UserAccount userAccount, List<UserAccountProperty> userAccountProperties);
+	void create(UserAccountPersistenceModel userAccount, List<UserAccountPropertyPersistenceModel> userAccountProperties);
 	
-	void update(UserAccount userAccount);
+	void update(UserAccountPersistenceModel userAccount);
 	
-	void updateAccountProperties(List<UserAccountProperty> userAccountProperties);
+	void updateAccountProperties(List<UserAccountPropertyPersistenceModel> userAccountProperties);
 }

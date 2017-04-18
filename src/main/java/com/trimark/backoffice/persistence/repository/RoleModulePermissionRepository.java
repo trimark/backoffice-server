@@ -6,26 +6,26 @@ import org.hibernate.Criteria;
 import org.hibernate.criterion.Restrictions;
 import org.springframework.stereotype.Repository;
 
-import com.trimark.backoffice.persistence.model.Role;
-import com.trimark.backoffice.persistence.model.RoleModulePermission;
+import com.trimark.backoffice.persistence.model.RolePersistenceModel;
+import com.trimark.backoffice.persistence.model.RoleModulePermissionPersistenceModel;
 
 @Repository("roleModulePermissionRepository")
-public class RoleModulePermissionRepository extends BaseRepository<Long, RoleModulePermission> implements IRoleModulePermissionRepository {
+public class RoleModulePermissionRepository extends BaseRepository<Long, RoleModulePermissionPersistenceModel> implements IRoleModulePermissionRepository {
 
 	@SuppressWarnings("unchecked")
-	public List<RoleModulePermission> getRoleModulePermissions(Role role) {
+	public List<RoleModulePermissionPersistenceModel> getRoleModulePermissions(RolePersistenceModel role) {
 		Criteria criteria = createEntityCriteria();
 		criteria.add(Restrictions.eq("role", role));
-		return (List<RoleModulePermission>) criteria.list();
+		return (List<RoleModulePermissionPersistenceModel>) criteria.list();
 	}
 
 	@Override
-	public void save(RoleModulePermission roleModulePermission) {
+	public void save(RoleModulePermissionPersistenceModel roleModulePermission) {
 		persist(roleModulePermission);
 	}
 
 	@Override
-	public void delete(RoleModulePermission entity) {
+	public void delete(RoleModulePermissionPersistenceModel entity) {
 		super.delete(entity);
 	}	
 }

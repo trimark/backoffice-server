@@ -6,10 +6,10 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
-import com.trimark.backoffice.persistence.enumeration.RoleType;
-import com.trimark.backoffice.persistence.model.Organization;
-import com.trimark.backoffice.persistence.model.Role;
-import com.trimark.backoffice.persistence.model.RoleModulePermission;
+import com.trimark.backoffice.enumeration.RoleType;
+import com.trimark.backoffice.persistence.model.OrganizationPersistenceModel;
+import com.trimark.backoffice.persistence.model.RolePersistenceModel;
+import com.trimark.backoffice.persistence.model.RoleModulePermissionPersistenceModel;
 import com.trimark.backoffice.persistence.repository.IRoleModulePermissionRepository;
 import com.trimark.backoffice.persistence.repository.IRoleRepository;
 
@@ -24,45 +24,45 @@ public class RoleService implements IRoleService {
 	private IRoleModulePermissionRepository roleModulePermissionRepository;
 
 	@Override
-	public Role findById(int id) {
+	public RolePersistenceModel findById(int id) {
 		return roleRepository.findById(id);
 	}
 	
 	@Override
-	public List<Role> findRolesByOwner(Organization owner) {
+	public List<RolePersistenceModel> findRolesByOwner(OrganizationPersistenceModel owner) {
 		return roleRepository.findAllByOwner(owner);
 	}
 
 	@Override
-	public List<Role> findRolesByOwnerAndType(Organization owner, RoleType roleType) {
+	public List<RolePersistenceModel> findRolesByOwnerAndType(OrganizationPersistenceModel owner, RoleType roleType) {
 		return roleRepository.findAllByOwnerAndType(owner, roleType);
 	}
 
 	@Override
-	public void create(Role role) {
+	public void create(RolePersistenceModel role) {
 		roleRepository.create(role);
 	}
 	
 	@Override
-	public void update(Role role) {
+	public void update(RolePersistenceModel role) {
 		roleRepository.update(role);
 	}
 
 	@Override
-	public List<RoleModulePermission> findRoleModulePermissions(Role role) {
+	public List<RoleModulePermissionPersistenceModel> findRoleModulePermissions(RolePersistenceModel role) {
 		return roleModulePermissionRepository.getRoleModulePermissions(role);
 	}
 
 	@Override
-	public void saveRoleModulePermissions(List<RoleModulePermission> roleModulePermissions) {
-		for (RoleModulePermission roleModulePermission : roleModulePermissions) {
+	public void saveRoleModulePermissions(List<RoleModulePermissionPersistenceModel> roleModulePermissions) {
+		for (RoleModulePermissionPersistenceModel roleModulePermission : roleModulePermissions) {
 			roleModulePermissionRepository.save(roleModulePermission);
 		}
 	}
 
 	@Override
-	public void deleteRoleModulePermissions(List<RoleModulePermission> roleModulePermissions) {
-		for (RoleModulePermission roleModulePermission : roleModulePermissions) {
+	public void deleteRoleModulePermissions(List<RoleModulePermissionPersistenceModel> roleModulePermissions) {
+		for (RoleModulePermissionPersistenceModel roleModulePermission : roleModulePermissions) {
 			roleModulePermissionRepository.delete(roleModulePermission);
 		}
 	}

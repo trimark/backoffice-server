@@ -13,11 +13,11 @@ import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.stereotype.Service;
 
-import com.trimark.backoffice.persistence.enumeration.Permission;
-import com.trimark.backoffice.persistence.model.Organization;
-import com.trimark.backoffice.persistence.model.Role;
-import com.trimark.backoffice.persistence.model.RoleModulePermission;
-import com.trimark.backoffice.persistence.model.UserAccount;
+import com.trimark.backoffice.enumeration.Permission;
+import com.trimark.backoffice.persistence.model.OrganizationPersistenceModel;
+import com.trimark.backoffice.persistence.model.RolePersistenceModel;
+import com.trimark.backoffice.persistence.model.RoleModulePermissionPersistenceModel;
+import com.trimark.backoffice.persistence.model.UserAccountPersistenceModel;
 
 @Service("backofficeUserDetailsService")
 public class BackofficeUserDetailsService implements UserDetailsService {
@@ -36,30 +36,33 @@ public class BackofficeUserDetailsService implements UserDetailsService {
 		StringTokenizer strToken = new StringTokenizer(usertoken, "/");
 		String organizationName = strToken.nextToken();
 		String userName = strToken.nextToken();
-		Organization organization = organizationService.findByName(organizationName);
-		UserAccount userAccount = userAccountService.getUserAccountByOrganizationAndUserName(organization, userName);
+		OrganizationPersistenceModel organization = organizationService.findByName(organizationName);
+		UserAccountPersistenceModel userAccount = userAccountService.getUserAccountByOrganizationAndUserName(organization, userName);
 		if(userAccount == null){
 			throw new UsernameNotFoundException("Username not found");
 		}
-		Role role = userAccount.getRole();
+		RolePersistenceModel role = userAccount.getRole();
 		if (role.getName().equals("Superuser")) {
 			role = organization.getRole();
 		}
 		return new User(usertoken, userAccount.getPassword(), true, true, true, true, getGrantedAuthorities(roleService.findRoleModulePermissions(role)));
 	}
 	
-	private List<GrantedAuthority> getGrantedAuthorities(List<RoleModulePermission> roleModulePermissions) {
+	private List<GrantedAuthority> getGrantedAuthorities(List<RoleModulePermissionPersistenceModel> roleModulePermissions) {
 		List<GrantedAuthority> grantedAuthorities = new ArrayList<GrantedAuthority>();
-		for (RoleModulePermission roleModulePermission : roleModulePermissions) {
+		for (RoleModulePermissionPersistenceModel roleModulePermission : roleModulePermissions) {
 			for (int i = 0; i < 32; i++) {
 				int mask = ((1 << i) & roleModulePermission.getPermissions()); 
 				if (mask > 0) {
 					Permission permission = Permission.valueOf(mask);
-					System.out.println("getGrantedAuthorities >>> " + "ROLE_" + roleModulePermission.getModule() + "_" + permission);
+					//System.out.println("getGrantedAuthorities >>> " + "ROLE_" + roleModulePermission.getModule() + "_" + permission);
 					grantedAuthorities.add(new SimpleGrantedAuthority("ROLE_" + roleModulePermission.getModule() + "_" + permission));
 				}
 			}
 		}
+		grantedAuthorities.add(new SimpleGrantedAuthority("ROLE_GAMES_READ"));
+		grantedAuthorities.add(new SimpleGrantedAuthority("ROLE_LOTTERIES_READ"));
+		grantedAuthorities.add(new SimpleGrantedAuthority("ROLE_LOTTERIES_CREATE"));
 		return grantedAuthorities;
 	}
 

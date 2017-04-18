@@ -7,15 +7,15 @@ import org.hibernate.Hibernate;
 import org.hibernate.criterion.Restrictions;
 import org.springframework.stereotype.Repository;
 
-import com.trimark.backoffice.persistence.model.Organization;
-import com.trimark.backoffice.persistence.model.UserAccount;
+import com.trimark.backoffice.persistence.model.OrganizationPersistenceModel;
+import com.trimark.backoffice.persistence.model.UserAccountPersistenceModel;
 
 @Repository("userAccountRepository")
-public class UserAccountRepository extends BaseRepository<Integer, UserAccount> implements IUserAccountRepository {
+public class UserAccountRepository extends BaseRepository<Integer, UserAccountPersistenceModel> implements IUserAccountRepository {
 	
 	@Override
-	public UserAccount findByAccountId(int accountId) {
-		UserAccount result = getByKey(accountId);
+	public UserAccountPersistenceModel findByAccountId(int accountId) {
+		UserAccountPersistenceModel result = getByKey(accountId);
 		if (result != null) {
 			Hibernate.initialize(result.getOrganization());
 			Hibernate.initialize(result.getRole());
@@ -24,11 +24,11 @@ public class UserAccountRepository extends BaseRepository<Integer, UserAccount> 
 	}
 	
 	@Override
-	public UserAccount getUserAccountByOrganizationAndUserName(Organization organization, String userName) {
+	public UserAccountPersistenceModel getUserAccountByOrganizationAndUserName(OrganizationPersistenceModel organization, String userName) {
 		Criteria criteria = createEntityCriteria();
 		criteria.add(Restrictions.eq("organization", organization));
 		criteria.add(Restrictions.eq("userName", userName));
-		UserAccount result = (UserAccount) criteria.uniqueResult();
+		UserAccountPersistenceModel result = (UserAccountPersistenceModel) criteria.uniqueResult();
 		if (result != null) {
 			Hibernate.initialize(result.getOrganization());
 			Hibernate.initialize(result.getRole());
@@ -38,23 +38,23 @@ public class UserAccountRepository extends BaseRepository<Integer, UserAccount> 
 
 	@SuppressWarnings("unchecked")
 	@Override
-	public List<UserAccount> findAllByOrganization(Organization organization) {
+	public List<UserAccountPersistenceModel> findAllByOrganization(OrganizationPersistenceModel organization) {
 		Criteria criteria = createEntityCriteria();
 		criteria.add(Restrictions.eq("organization", organization));
-		List<UserAccount> result = criteria.list();
-		for (UserAccount userAccount : result) {
+		List<UserAccountPersistenceModel> result = criteria.list();
+		for (UserAccountPersistenceModel userAccount : result) {
 			Hibernate.initialize(userAccount.getRole());
 		}
 		return result;
 	}
 	
 	@Override
-	public void create(UserAccount userAccount) {
+	public void create(UserAccountPersistenceModel userAccount) {
 		persist(userAccount);
 	}
 
 	@Override
-	public void update(UserAccount userAccount) {
+	public void update(UserAccountPersistenceModel userAccount) {
 		super.update(userAccount);
 	}	
 }

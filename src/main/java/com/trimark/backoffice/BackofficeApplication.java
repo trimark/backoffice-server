@@ -23,7 +23,7 @@ import org.springframework.boot.context.web.SpringBootServletInitializer;
 /**
  * @author Rizal Pascual
  */
-@SpringBootApplication
+@SpringBootApplication(scanBasePackages = {"com.trimark.backoffice", "com.trimark.api"})
 public class BackofficeApplication extends SpringBootServletInitializer {
 	
 	@Override

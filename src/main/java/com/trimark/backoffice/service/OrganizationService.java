@@ -7,10 +7,10 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
-import com.trimark.backoffice.persistence.enumeration.RoleType;
-import com.trimark.backoffice.persistence.model.Organization;
-import com.trimark.backoffice.persistence.model.Role;
-import com.trimark.backoffice.persistence.model.UserAccount;
+import com.trimark.backoffice.enumeration.RoleType;
+import com.trimark.backoffice.persistence.model.OrganizationPersistenceModel;
+import com.trimark.backoffice.persistence.model.RolePersistenceModel;
+import com.trimark.backoffice.persistence.model.UserAccountPersistenceModel;
 import com.trimark.backoffice.persistence.repository.IOrganizationRepository;
 import com.trimark.backoffice.persistence.repository.IRoleRepository;
 import com.trimark.backoffice.persistence.repository.IUserAccountRepository;
@@ -29,40 +29,40 @@ public class OrganizationService implements IOrganizationService {
 	private IUserAccountRepository userAccountRepository;
 
 	@Override
-	public Organization loadById(int id) {
+	public OrganizationPersistenceModel loadById(int id) {
 		return organizationRepository.loadById(id);
 	}
 	
 	@Override
-	public Organization findById(int id) {
+	public OrganizationPersistenceModel findById(int id) {
 		return organizationRepository.findById(id);
 	}
 
 	@Override
-	public Organization findByName(String name) {
+	public OrganizationPersistenceModel findByName(String name) {
 		return organizationRepository.findByName(name);
 	}
 
 	@Override
-	public List<Organization> findAll() {
+	public List<OrganizationPersistenceModel> findAll() {
 		return organizationRepository.findAll();
 	}
 
 	@Override
-	public List<Organization> findAllChildOrganization(int id) {
+	public List<OrganizationPersistenceModel> findAllChildOrganization(int id) {
 		return organizationRepository.findAllChildOrganization(id);
 	}
 
 	@Override
-	public void create(Organization organization) {
+	public void create(OrganizationPersistenceModel organization) {
 		organizationRepository.create(organization);
-		Role role = new Role();
+		RolePersistenceModel role = new RolePersistenceModel();
 		role.setName("Superuser");
 		role.setDescription("Superuser");
 		role.setRoleType(RoleType.User);
 		role.setOwner(organization);
 		roleRepository.create(role);
-		UserAccount userAccount = new UserAccount();
+		UserAccountPersistenceModel userAccount = new UserAccountPersistenceModel();
 		userAccount.setUserName("superuser");
 		userAccount.setPassword("password");
 		userAccount.setOrganization(organization);
@@ -71,7 +71,7 @@ public class OrganizationService implements IOrganizationService {
 	}
 	
 	@Override
-	public void update(Organization organization) {
+	public void update(OrganizationPersistenceModel organization) {
 		organizationRepository.update(organization);
 	}
 }

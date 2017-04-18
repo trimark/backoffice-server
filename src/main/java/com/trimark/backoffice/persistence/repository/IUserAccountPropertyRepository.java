@@ -2,14 +2,14 @@ package com.trimark.backoffice.persistence.repository;
 
 import java.util.List;
 
-import com.trimark.backoffice.persistence.model.UserAccount;
-import com.trimark.backoffice.persistence.model.UserAccountProperty;
+import com.trimark.backoffice.persistence.model.UserAccountPersistenceModel;
+import com.trimark.backoffice.persistence.model.UserAccountPropertyPersistenceModel;
 
 public interface IUserAccountPropertyRepository {
 	
-	List<UserAccountProperty> findAllByUserAccount(UserAccount userAccount);
+	List<UserAccountPropertyPersistenceModel> findAllByUserAccount(UserAccountPersistenceModel userAccount);
 	
-	void create(UserAccountProperty userAccountProperty);
+	void create(UserAccountPropertyPersistenceModel userAccountProperty);
 	
-	void update(UserAccountProperty userAccountPropery);
+	void update(UserAccountPropertyPersistenceModel userAccountPropery);
 }
